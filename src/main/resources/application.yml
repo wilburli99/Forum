@@ -8,17 +8,19 @@ spring:
     username: root
     password: 980515Qq!!
     driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
 
-# mybatis????
+# 配置mybatis
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    map-underscore-to-camel-case: true  # ??????
-  # ??????
-  mapper-locations: classpath:mapper/**Mapper.xml
+    map-underscore-to-camel-case: true # 驼峰命名
+# 扫描mapper
+  mapper-locations: classpath:mapper/**/*.xml
 
+# 日志
 logging:
   pattern:
-    dateformat: MM-dd HH:mm:ss # ????
+    dateformat: MM-dd HH:mm:ss
   level:
-    root: info # ???????
+    root: info
