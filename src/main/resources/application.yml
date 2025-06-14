@@ -24,3 +24,9 @@ logging:
     dateformat: MM-dd HH:mm:ss
   level:
     root: info
+
+# SpringDoc OpenAPI 3 配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: cn.iocoder.forum.controller

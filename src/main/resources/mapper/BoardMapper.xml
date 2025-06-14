@@ -20,7 +20,7 @@
     from t_board
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="cn.iocoder.forum.model.Board" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="cn.iocoder.forum.model.Board">
     insert into t_board (id, name, articleCount, 
       sort, state, deleteState, 
       createTime, updateTime)
@@ -28,7 +28,7 @@
       #{sort,jdbcType=INTEGER}, #{state,jdbcType=TINYINT}, #{deleteState,jdbcType=TINYINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.iocoder.forum.model.Board" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="cn.iocoder.forum.model.Board">
     insert into t_board
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

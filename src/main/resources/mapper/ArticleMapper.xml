@@ -32,7 +32,7 @@
     from t_article
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="cn.iocoder.forum.model.Article" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="cn.iocoder.forum.model.Article">
     insert into t_article (id, boardId, userId, 
       title, visitCount, replyCount, 
       likeCount, state, deleteState, 
@@ -44,7 +44,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.iocoder.forum.model.Article" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="cn.iocoder.forum.model.Article">
     insert into t_article
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

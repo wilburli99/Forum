@@ -20,7 +20,7 @@
     from t_message
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="cn.iocoder.forum.model.Message" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="cn.iocoder.forum.model.Message">
     insert into t_message (id, postUserId, receiveUserId, 
       content, state, deleteState, 
       createTime, updateTime)
@@ -28,7 +28,7 @@
       #{content,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{deleteState,jdbcType=TINYINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.iocoder.forum.model.Message" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="cn.iocoder.forum.model.Message">
     insert into t_message
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
