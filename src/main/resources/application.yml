@@ -9,6 +9,13 @@ spring:
     password: 980515Qq!!
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
+  # 静态资源配置
+  web:
+    resources:
+      add-mappings: true
+      static-locations: classpath:/static/,classpath:/public/,classpath:/resources/,classpath:/META-INF/resources/
+  mvc:
+    throw-exception-if-no-handler-found: false
 
 # 配置mybatis
 mybatis:
