@@ -83,7 +83,7 @@ public class User {
         this.email = email == null ? null : email.trim();
     }
 
-    public Byte getGender() {
+    public Byte getGender(int i) {
         return gender;
     }
 
@@ -107,7 +107,7 @@ public class User {
         this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim();
     }
 
-    public Integer getArticleCount() {
+    public Integer getArticleCount(int i) {
         return articleCount;
     }
 
@@ -115,7 +115,7 @@ public class User {
         this.articleCount = articleCount;
     }
 
-    public Byte getIsAdmin() {
+    public Byte getIsAdmin(int i) {
         return isAdmin;
     }
 
@@ -131,7 +131,7 @@ public class User {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public Byte getState() {
+    public Byte getState(int i) {
         return state;
     }
 
@@ -139,7 +139,7 @@ public class User {
         this.state = state;
     }
 
-    public Byte getDeleteState() {
+    public Byte getDeleteState(int i) {
         return deleteState;
     }
 

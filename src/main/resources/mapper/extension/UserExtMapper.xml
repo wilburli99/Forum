@@ -13,8 +13,9 @@
         select
         <include refid="Base_Column_List" />
         from t_user
+        where
         deleteState = 0
         and
-        where username = #{username,jdbcType=VARCHAR}
+        username = #{username,jdbcType=VARCHAR}
     </select>
 </mapper>
