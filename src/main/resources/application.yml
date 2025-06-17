@@ -45,3 +45,5 @@ springdoc:
 forum-sys:
   login:
     url: sign-in.html # 未登录下，跳转到登录页面
+  index:
+    board-num: 9
