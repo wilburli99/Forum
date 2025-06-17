@@ -15,10 +15,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @Tag(name = "用户接口", description = "用户注册、登录、登出、修改密码、修改昵称、修改头像、修改邮箱、修改手机号、修改简介、修改性别、修改生日、修改地址、修改密码、修改昵称、修改头像、修改邮箱、修改手机号、修改简介、修改性别、修改生日、修改地址")
 @Slf4j
 @RestController
@@ -78,6 +76,30 @@ public class UserController {
         HttpSession session = request.getSession();
         session.setAttribute(AppConfig.USER_SESSION, user);
         // 3. 创建返回结果
+        return AppResult.success(user);
+    }
+
+    @Operation(summary ="获取用户信息", description = "获取用户信息")
+    @GetMapping("/info")
+    public AppResult<User> getUserInfo (HttpServletRequest request,
+                                        @Param("用户Id") @RequestParam(value = "id", required = false) Long id) {
+        // 定义返回的User对象
+        User user = null;
+        // 根据Id的值判断User对象的获取方式
+        if (id == null) {
+            // 1. 如果id为空，从session中获取当前登录的用户信息
+            HttpSession session = request.getSession(false);
+            // 从session中获取当前登录的用户信息
+            user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        } else {
+            // 2. 如果id不为空，从数据库中按Id查询出用户信息
+            user = userService.selectById(id);
+        }
+        // 判断用户对象是否为空
+        if (user == null) {
+            return AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        // 返回正常的结果
         return AppResult.success(user);
     }
 }

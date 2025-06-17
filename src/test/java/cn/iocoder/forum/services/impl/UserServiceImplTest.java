@@ -50,4 +50,10 @@ class UserServiceImplTest {
         User user = userService.login("bitboy ", "123456");
         System.out.println(user);
     }
+    @Transactional
+    @Test
+    void selectById() {
+        User user = userService.selectById(3L);
+        System.out.println(user);
+    }
 }

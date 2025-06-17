@@ -93,4 +93,17 @@ public class UserServiceImpl implements IUserService {
         log.info("登录成功, username = " +  username);
         return user;
     }
+
+    @Override
+    public User selectById(Long id) {
+        // 1. 非空校验
+        if (id == null) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 2. 查询用户
+        User user = userMapper.selectByPrimaryKey(id);
+        // 3. 返回结果
+        return user;
+    }
 }
