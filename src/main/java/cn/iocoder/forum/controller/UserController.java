@@ -60,7 +60,7 @@ public class UserController {
         userService.createNormalUser(user);
         return AppResult.success();
     }
-    @Operation(summary = "用户登录")
+    @Operation(summary = "用户登录", description = "用户登录")
     @PostMapping("/login")
     public AppResult login(HttpServletRequest request,
                            @Param("用户名") @RequestParam("username") @NotNull String username,
@@ -101,5 +101,19 @@ public class UserController {
         }
         // 返回正常的结果
         return AppResult.success(user);
+    }
+
+    @Operation(summary = "用户登出", description = "用户登出")
+    @GetMapping("/logout")
+    public AppResult logout(HttpServletRequest  request) {
+        // 获取session对象
+        HttpSession session = request.getSession(false);
+        // 判断session对象是否为空
+        if (session != null) {
+            log.info("用户登出");
+            // 表示用户在登录状态，直接销毁session
+            session.invalidate();
+        }
+        return AppResult.success("退出登录成功");
     }
 }

@@ -41,3 +41,7 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
   packages-to-scan: cn.iocoder.forum.controller
+
+forum-sys:
+  login:
+    url: sign-in.html # 未登录下，跳转到登录页面
