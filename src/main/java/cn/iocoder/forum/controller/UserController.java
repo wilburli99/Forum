@@ -2,6 +2,7 @@ package cn.iocoder.forum.controller;
 
 import cn.iocoder.forum.common.AppResult;
 import cn.iocoder.forum.common.ResultCode;
+import cn.iocoder.forum.config.AppConfig;
 import cn.iocoder.forum.model.User;
 import cn.iocoder.forum.services.IUserService;
 import cn.iocoder.forum.utils.MD5Util;
@@ -9,6 +10,8 @@ import cn.iocoder.forum.utils.UUIDUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -58,5 +61,23 @@ public class UserController {
         // 调用services层
         userService.createNormalUser(user);
         return AppResult.success();
+    }
+    @Operation(summary = "用户登录")
+    @PostMapping("/login")
+    public AppResult login(HttpServletRequest request,
+                           @Param("用户名") @RequestParam("username") @NotNull String username,
+                           @Param("密码") @RequestParam("password") @NotNull String password) {
+        // 1. 调用services中的登录方法，返回user对象
+        User user = userService.login(username, password);
+        // 二次校验
+        if (user == null) {
+            log.warn(ResultCode.FAILED_LOGIN.toString());
+            return AppResult.failed(ResultCode.FAILED_LOGIN);
+        }
+        // 2. 如果登录成功把User对象设置到Session作用域中
+        HttpSession session = request.getSession();
+        session.setAttribute(AppConfig.USER_SESSION, user);
+        // 3. 创建返回结果
+        return AppResult.success(user);
     }
 }

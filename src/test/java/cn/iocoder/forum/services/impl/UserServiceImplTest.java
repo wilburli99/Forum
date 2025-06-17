@@ -7,13 +7,14 @@ import cn.iocoder.forum.utils.UUIDUtil;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class UserServiceImplTest {
     @Resource
     private IUserService userService;
-
+    @Transactional // 测试时，开启事务，在测试完成后回滚，不会污染数据库
     @Test
     void createNormalUser() {
         // 构造user对象
@@ -35,6 +36,18 @@ class UserServiceImplTest {
         // 调用services层的方法
         userService.createNormalUser(user);
         // 打印结果
+        System.out.println(user);
+    }
+    @Transactional
+    @Test
+    void selectByUserName() {
+        User user = userService.selectByUserName("bitboy");
+        System.out.println(user);
+    }
+    @Transactional
+    @Test
+    void login() {
+        User user = userService.login("bitboy ", "123456");
         System.out.println(user);
     }
 }
