@@ -1,12 +1,16 @@
 package cn.iocoder.forum.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class User {
     private Long id;
 
     private String username;
 
+    @JsonIgnore // 不参与json序列化
     private String password;
 
     private String nickname;
@@ -17,6 +21,7 @@ public class User {
 
     private Byte gender;
 
+    @JsonIgnore // 不参与json序列化
     private String salt;
 
     private String avatarUrl;
@@ -29,6 +34,7 @@ public class User {
 
     private Byte state;
 
+    @JsonIgnore // 不参与json序列化
     private Byte deleteState;
 
     private Date createTime;

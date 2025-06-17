@@ -17,6 +17,10 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: false
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss # ⽇期格式
+    default-property-inclusion: NON_NULL # 不为null时序列化
+
 # 配置mybatis
 mybatis:
   configuration:

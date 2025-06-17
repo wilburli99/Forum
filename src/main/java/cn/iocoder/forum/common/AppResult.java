@@ -1,8 +1,13 @@
 package cn.iocoder.forum.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class AppResult<T> {
+    @JsonInclude(JsonInclude.Include.ALWAYS) // 不论任何情况都参与json序列化
     private int code;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String message;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private T data;
 
     /**
