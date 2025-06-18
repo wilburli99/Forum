@@ -30,6 +30,7 @@ public class ArticleController {
     private BoardServiceImpl boardService;
     @Resource
     private ArticleServiceImpl articleService;
+
     @Operation(summary = "创建帖子", description = "创建帖子")
     @PostMapping("/create")
     public AppResult create(HttpServletRequest  request,
@@ -62,6 +63,7 @@ public class ArticleController {
         // 返回结果
         return AppResult.success();
     }
+
     @Operation(summary = "根据帖子Id获取详情", description = "根据帖子Id获取详情")
     @GetMapping("getAllByBoardId")
     public AppResult<List> getAllByBoardId(@Param("板块ID") @RequestParam(value = "boardId", required = false) Long boardId) {
@@ -78,5 +80,18 @@ public class ArticleController {
         }
         // 返回响应结果
         return AppResult.success(articles);
+    }
+
+    @Operation(summary = "帖子详情", description = "帖子详情")
+    @GetMapping("/details")
+    public AppResult<Article> getDetails(@Param("id") @RequestParam("id") @NotNull Long id) {
+        // 调用service，获取帖子详情
+        Article article = articleService.selectDetailById(id);
+        // 判断帖子对象是否为空
+        if (article == null) {
+            // 返回错误信息
+            return AppResult.failed(ResultCode.FAILED_ARTICLE_NOT_EXISTS);
+        }
+        return AppResult.success(article);
     }
 }

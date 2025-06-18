@@ -1,6 +1,7 @@
 package cn.iocoder.forum.services;
 
 import cn.iocoder.forum.model.Article;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,4 +26,11 @@ public interface IArticleService {
      * @return
      */
     List<Article> selectAllByBoardId(Long boardId);
+
+    /**
+     * 根据帖子ID查询帖子详情
+     * @param id 帖子ID
+     * @return
+     */
+    Article selectDetailById(Long id);
 }
