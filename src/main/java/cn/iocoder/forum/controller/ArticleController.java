@@ -1,0 +1,65 @@
+package cn.iocoder.forum.controller;
+
+import cn.iocoder.forum.common.AppResult;
+import cn.iocoder.forum.common.ResultCode;
+import cn.iocoder.forum.config.AppConfig;
+import cn.iocoder.forum.model.Article;
+import cn.iocoder.forum.model.Board;
+import cn.iocoder.forum.model.User;
+import cn.iocoder.forum.services.impl.ArticleServiceImpl;
+import cn.iocoder.forum.services.impl.BoardServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@Slf4j
+@Tag(name = "帖子接口", description = "帖子接口")
+@RequestMapping("/article")
+@RestController
+public class ArticleController {
+    @Resource
+    private BoardServiceImpl boardService;
+    @Resource
+    private ArticleServiceImpl articleService;
+    @Operation(summary = "创建帖子", description = "创建帖子")
+    @PostMapping("/create")
+    public AppResult create(HttpServletRequest  request,
+                            @Param("版块ID") @RequestParam("boardId") @NotNull Long boardId,
+                            @Param("标题") @RequestParam("title") @NotNull String title,
+                            @Param("内容") @RequestParam("content") @NotNull String content) {
+        // 检验用户是否禁言
+        HttpSession session = request.getSession(false);
+        User user = (User)session.getAttribute(AppConfig.USER_SESSION);
+        if (user.getState() == 1) {
+            // 用户已禁言
+            return AppResult.failed(ResultCode.FAILED_USER_BANNED);
+        }
+        // 板块校验
+        Board board = boardService.selectById(boardId.longValue());
+        if (board == null || board.getDeleteState() == 1 || board.getState() == 1) {
+            // 打印日志
+            log.warn(ResultCode.FAILED_BOARD_BANNED.toString());
+            // 返回响应
+            return AppResult.failed(ResultCode.FAILED_BOARD_BANNED);
+        }
+        // 封装文章对象
+        Article article = new Article();
+        article.setUserId(user.getId());
+        article.setBoardId(boardId);
+        article.setTitle(title);
+        article.setContent(content);
+        // 调用service
+        articleService.create(article);
+        // 返回结果
+        return AppResult.success();
+    }
+}
