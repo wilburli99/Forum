@@ -27,6 +27,12 @@ public class Article {
 
     private String content;
 
+    // 关联对象-作者
+    private User user;
+
+    // 关联对象-版块
+    private Board board;
+
     public Long getId() {
         return id;
     }
@@ -121,5 +127,21 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

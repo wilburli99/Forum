@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -76,5 +77,30 @@ public class ArticleServiceImpl implements IArticleService {
         // 打印日志
         log.info(ResultCode.SUCCESS.toString() + ", user id = " + article.getUserId()
                 + ", board id = " + article.getBoardId() + ", article id = "+article.getId() + "发帖成功");
+    }
+
+    @Override
+    public List<Article> selectAll() {
+        List<Article> articles = articleMapper.selectAll();
+        return articles;
+    }
+
+    @Override
+    public List<Article> selectAllByBoardId(Long boardId) {
+        // 非空校验
+        if (boardId == null || boardId <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 板块校验
+        Board board = boardService.selectById(boardId);
+        if (board == null) {
+            log.warn(ResultCode.FAILED_BOARD_NOT_EXISTS.toString() + ", board id = " + boardId);
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_NOT_EXISTS));
+        }
+        // 调用DAO来创建查询
+        List<Article> articles = articleMapper.selectAllByBoardId(boardId);
+        // 返回结果
+        return articles;
     }
 }

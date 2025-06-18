@@ -2,6 +2,9 @@ package cn.iocoder.forum.dao;
 
 import cn.iocoder.forum.model.Article;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface ArticleMapper {
@@ -16,4 +19,17 @@ public interface ArticleMapper {
     int updateByPrimaryKeyWithBLOBs(Article row);
 
     int updateByPrimaryKey(Article row);
+
+    /**
+     * 查询帖子列表
+     * @return
+     */
+    List<Article> selectAll();
+
+    /**
+     * 根据版块ID查询帖子列表
+     * @param boardId
+     * @return
+     */
+    List<Article> selectAllByBoardId(@Param("boardId") Long boardId);
 }

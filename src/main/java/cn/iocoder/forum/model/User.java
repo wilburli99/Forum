@@ -1,6 +1,7 @@
 package cn.iocoder.forum.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,7 +24,7 @@ public class User {
 
     @JsonIgnore // 不参与json序列化
     private String salt;
-
+    @JsonInclude(JsonInclude.Include.ALWAYS) // 强制参加json序列化
     private String avatarUrl;
 
     private Integer articleCount;
