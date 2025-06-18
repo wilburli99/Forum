@@ -5,6 +5,7 @@ import cn.iocoder.forum.services.IBoardService;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,5 +19,13 @@ class BoardServiceImplTest {
     void selectByNum() {
         List<Board> result = boardService.selectByNum(1);
         System.out.println(result);
+    }
+
+
+    @Test
+    @Transactional
+    void addOneArticleCountById() {
+        boardService.addOneArticleCountById(1L);
+        System.out.println("更新成功");
     }
 }

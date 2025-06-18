@@ -30,6 +30,16 @@ public class BoardServiceImpl implements IBoardService {
     }
 
     @Override
+    public Board selectById(Long id) {
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_BOARD_ARTICLE_COUNT.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_ARTICLE_COUNT));
+        }
+        Board board = boardMapper.selectByPrimaryKey(id);
+        return board;
+    }
+
+    @Override
     public void addOneArticleCountById(Long id) {
         if (id == null || id <= 0) {
             log.warn(ResultCode.FAILED_BOARD_ARTICLE_COUNT.toString());
