@@ -1,5 +1,6 @@
 package cn.iocoder.forum.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
 
 public class Article {
@@ -26,6 +27,9 @@ public class Article {
     private Date updateTime;
 
     private String content;
+    
+    @Schema(description = "是否作者")
+    private boolean isOwn;
 
     // 关联对象-作者
     private User user;
@@ -143,5 +147,13 @@ public class Article {
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    public boolean isOwn() {
+        return isOwn;
+    }
+
+    public void setOwn(boolean own) {
+        isOwn = own;
     }
 }

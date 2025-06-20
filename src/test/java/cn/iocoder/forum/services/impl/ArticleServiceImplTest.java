@@ -20,12 +20,12 @@ class ArticleServiceImplTest {
     @Test
     void create() {
         Article article = new Article();
-        article.setUserId(2L);
+        article.setUserId(3L);
         article.setBoardId(1L);
-        article.setTitle("单元测试");
-        article.setContent("单元测试");
+        article.setTitle("单元测试2");
+        article.setContent("单元测试2");
         articleService.create(article);
-        System.out.println("发帖成功");
+        System.out.println("发帖成功2");
     }
 
     @Test
@@ -43,6 +43,18 @@ class ArticleServiceImplTest {
     @Test
     void selectDetailById() throws JsonProcessingException {
         Article article = articleService.selectDetailById(1L);
+        System.out.println(objectMapper.writeValueAsString(article));
+    }
+
+    @Test
+    void modify() {
+        articleService.modify(1L, "单元测试-编辑", "单元测试-编辑");
+        System.out.println("修改成功");
+    }
+
+    @Test
+    void selectById() throws JsonProcessingException {
+        Article article = articleService.selectById(1L);
         System.out.println(objectMapper.writeValueAsString(article));
     }
 }

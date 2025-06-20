@@ -133,4 +133,38 @@ public class ArticleServiceImpl implements IArticleService {
         // 返回帖子详情
         return article;
     }
+
+    @Override
+    public Article selectById(Long id) {
+        // 参数校验
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 调用DAO查询
+        Article article = articleMapper.selectByPrimaryKey(id);
+        // 返回结果
+        return article;
+    }
+
+    @Override
+    public void modify(Long id, String title, String content) {
+        // 参数校验
+        if (id == null || StringUtil.isEmpty(title) || StringUtil.isEmpty(content)) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 构建要更新的帖子
+        Article updateArticle = new Article();
+        updateArticle.setId(id); // 帖子ID
+        updateArticle.setTitle(title); // 帖子标题
+        updateArticle.setContent(content); // 帖子内容
+        updateArticle.setUpdateTime(new Date()); // 更新时间
+        // 调用DAO，执行更新
+        int row = articleMapper.updateByPrimaryKeySelective(updateArticle);
+        if (row != 1) {
+            log.warn(ResultCode.ERROR_SERVICES.toString() + "受影响的行数不等于1" + row);
+            throw new ApplicationException(AppResult.failed(ResultCode.ERROR_SERVICES));
+        }
+    }
 }
