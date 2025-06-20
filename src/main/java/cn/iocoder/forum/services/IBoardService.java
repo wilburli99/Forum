@@ -24,4 +24,10 @@ public interface IBoardService {
      * @param id 版块Id
      */
     void addOneArticleCountById(Long id);
+
+    /**
+     * 版块中的帖子数量 -1
+     * @param id 版块Id
+     */
+    void subOneArticleCountById(Long id);
 }

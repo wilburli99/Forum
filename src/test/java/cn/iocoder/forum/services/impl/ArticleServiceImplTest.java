@@ -57,4 +57,15 @@ class ArticleServiceImplTest {
         Article article = articleService.selectById(1L);
         System.out.println(objectMapper.writeValueAsString(article));
     }
+
+    @Test
+    void thumbsUpById() {
+        articleService.thumbsUpById(1L);
+        System.out.println("点赞成功");
+    }
+
+    @Test
+    void deleteById() {
+        articleService.deleteById(1l);
+    }
 }

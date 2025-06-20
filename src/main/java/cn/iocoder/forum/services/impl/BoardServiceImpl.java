@@ -63,4 +63,34 @@ public class BoardServiceImpl implements IBoardService {
             throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
         }
     }
+
+    @Override
+    public void subOneArticleCountById(Long id) {
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_BOARD_ARTICLE_COUNT.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_ARTICLE_COUNT));
+        }
+        // 查询对应板块
+        Board board = boardMapper.selectByPrimaryKey(id);
+        if (board == null) {
+            log.warn(ResultCode.ERROR_IS_NULL.toString() + "board Id = " + id);
+            throw new ApplicationException(AppResult.failed(ResultCode.ERROR_IS_NULL));
+        }
+        // 更新帖子数量，需要重新创建对象
+        Board updateBoard = new Board();
+        updateBoard.setId(id);
+        updateBoard.setArticleCount(board.getArticleCount() - 1);
+        // 判断-1之后是否小于0
+        if (updateBoard.getArticleCount() < 0) {
+            // 如果小于0，则设置为0
+            updateBoard.setArticleCount(0);
+        }
+        // 通过调用动态sql语句，更新板块帖子数量
+        int row = boardMapper.updateByPrimaryKeySelective(updateBoard);
+        // 判断受影响的行数
+        if (row != 1) {
+            log.warn(ResultCode.FAILED.toString() + "受影响的行数不等于1" + row);
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+    }
 }

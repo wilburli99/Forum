@@ -116,13 +116,43 @@ public class UserServiceImpl implements IUserService {
         // 查询用户
         User user = userMapper.selectByPrimaryKey(id);
         if (user == null) {
-            log.warn(ResultCode.ERROR_IS_NULL.toString() + "userId = " + id);
+            log.warn(ResultCode.ERROR_IS_NULL.toString() + "user Id = " + id);
             throw new ApplicationException(AppResult.failed(ResultCode.ERROR_IS_NULL));
         }
         // 更新用户的发帖数量
         User updateUser = new User();
         updateUser.setId(id);
         updateUser.setArticleCount(user.getArticleCount() + 1);
+        // 调用DAO层，执行更新
+        int row = userMapper.updateByPrimaryKeySelective(updateUser);
+        // 判断受影响的行数
+        if (row != 1) {
+            log.warn(ResultCode.FAILED.toString() + "受影响的行数不等于1" + row);
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+    }
+
+    @Override
+    public void subOneArticleCountById(Long id) {
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_BOARD_ARTICLE_COUNT.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_ARTICLE_COUNT));
+        }
+        // 查询用户
+        User user = userMapper.selectByPrimaryKey(id);
+        if (user == null) {
+            log.warn(ResultCode.ERROR_IS_NULL.toString() + "userId = " + id);
+            throw new ApplicationException(AppResult.failed(ResultCode.ERROR_IS_NULL));
+        }
+        // 更新用户的发帖数量
+        User updateUser = new User();
+        updateUser.setId(id);
+        updateUser.setArticleCount(user.getArticleCount() - 1);
+        // 判断-1之后是否小于0
+        if (updateUser.getArticleCount() < 0) {
+            // 如果小于0，则设置为0
+            updateUser.setArticleCount(0);
+        }
         // 调用DAO层，执行更新
         int row = userMapper.updateByPrimaryKeySelective(updateUser);
         // 判断受影响的行数
