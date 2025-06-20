@@ -61,4 +61,10 @@ public interface IArticleService {
      */
     @Transactional
     void deleteById(Long id);
+
+    /**
+     * 帖子的回复数量 +1
+     * @param id 版块Id
+     */
+    void addOneReplyCountById(Long id);
 }

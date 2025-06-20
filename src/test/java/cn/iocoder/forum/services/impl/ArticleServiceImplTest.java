@@ -68,4 +68,10 @@ class ArticleServiceImplTest {
     void deleteById() {
         articleService.deleteById(1l);
     }
+
+    @Test
+    void addOneReplyCountById() {
+        articleService.addOneReplyCountById(2L);
+        System.out.println("更新成功");
+    }
 }
