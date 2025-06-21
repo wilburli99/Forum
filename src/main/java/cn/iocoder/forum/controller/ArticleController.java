@@ -82,6 +82,21 @@ public class ArticleController {
         return AppResult.success(articles);
     }
 
+    @Operation(summary = "根据用户Id获取帖子", description = "根据用户Id获取帖子")
+    @GetMapping("getAllByUserId")
+    public AppResult<List<Article>> getAllByUserId(HttpServletRequest request,
+            @Param("用户ID") @RequestParam(value = "userId", required = false)Long userId) {
+        // 如果ID为空，从当前用户session中获取ID
+        if (userId == null) {
+            HttpSession session = request.getSession(false);
+            User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+            userId = user.getId();
+        }
+        // 调用service
+        List<Article> articles = articleService.selectByUserId(userId);
+        return AppResult.success(articles);
+    }
+
     @Operation(summary = "帖子详情", description = "帖子详情")
     @GetMapping("/details")
     public AppResult<Article> getDetails(HttpServletRequest request,

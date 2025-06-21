@@ -42,6 +42,13 @@ public interface IArticleService {
     Article selectById(Long id);
 
     /**
+     * 根据ID查询帖子
+     * @param userId 用户ID
+     * @return
+     */
+    List<Article> selectByUserId(Long userId);
+
+    /**
      * 编辑帖子
      * @param id 帖子ID
      * @param title 帖子标题

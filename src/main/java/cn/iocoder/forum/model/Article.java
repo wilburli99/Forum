@@ -1,8 +1,10 @@
 package cn.iocoder.forum.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class Article {
     private Long id;
 
@@ -29,7 +31,7 @@ public class Article {
     private String content;
     
     @Schema(description = "是否作者")
-    private boolean isOwn;
+    private Boolean own;
 
     // 关联对象-作者
     private User user;
@@ -39,10 +41,6 @@ public class Article {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getBoardId() {
@@ -133,6 +131,18 @@ public class Article {
         this.content = content == null ? null : content.trim();
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getOwn() {
+        return own;
+    }
+
+    public void setOwn(Boolean own) {
+        this.own = own;
+    }
+
     public User getUser() {
         return user;
     }
@@ -147,13 +157,5 @@ public class Article {
 
     public void setBoard(Board board) {
         this.board = board;
-    }
-
-    public boolean isOwn() {
-        return isOwn;
-    }
-
-    public void setOwn(boolean own) {
-        isOwn = own;
     }
 }

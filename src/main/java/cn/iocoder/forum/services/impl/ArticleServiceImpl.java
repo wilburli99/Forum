@@ -148,6 +148,24 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
+    public List<Article> selectByUserId(Long userId) {
+        // 非空校验
+        if (userId == null || userId <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 检验用户是否存在
+        User user = userService.selectById(userId);
+        if (user == null) {
+            log.warn(ResultCode.FAILED_USER_NOT_EXISTS.toString() + ", user id = " + userId);
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS));
+        }
+        // 调用DAO查询
+        List<Article> articles = articleMapper.selectByUserId(userId);
+        return articles;
+    }
+
+    @Override
     public void modify(Long id, String title, String content) {
         // 参数校验
         if (id == null || StringUtil.isEmpty(title) || StringUtil.isEmpty(content)) {
@@ -271,4 +289,5 @@ public class ArticleServiceImpl implements IArticleService {
             throw new ApplicationException(AppResult.failed(ResultCode.ERROR_SERVICES));
         }
     }
+
 }
