@@ -3,6 +3,8 @@ package cn.iocoder.forum.services;
 import cn.iocoder.forum.model.ArticleReply;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface IArticleReplyService {
 
     /**
@@ -11,4 +13,11 @@ public interface IArticleReplyService {
      */
     @Transactional
     void create(ArticleReply articleReply);
+
+    /**
+     * 根据帖子Id查询帖子回复
+     * @param articleId 帖子Id
+     * @return
+     */
+    List<ArticleReply> selectByArticleId(Long articleId);
 }

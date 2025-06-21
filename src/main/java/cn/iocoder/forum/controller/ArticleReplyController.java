@@ -16,10 +16,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 帖子回复接口
@@ -65,5 +64,19 @@ public class ArticleReplyController {
         // 写入回复
         articleReplyService.create(articleReply);
         return AppResult.success();
+    }
+
+    @Operation(summary = "获取帖子回复列表", description = "获取帖子回复列表")
+    @GetMapping("/getReplies")
+    public AppResult<List<ArticleReply>> getRepliesByArticleId(Long articleId) {
+        // 校验帖子是否存在
+        Article article = articleService.selectById(articleId);
+        if (article == null || article.getDeleteState() == 1) {
+            // 返回错误提示
+            return AppResult.failed(ResultCode.FAILED_ARTICLE_NOT_EXISTS);
+        }
+        // 调用service，查询帖子详情
+        List<ArticleReply> articleReplies = articleReplyService.selectByArticleId(articleId);
+        return AppResult.success(articleReplies);
     }
 }
