@@ -6,6 +6,7 @@ import cn.iocoder.forum.config.AppConfig;
 import cn.iocoder.forum.model.User;
 import cn.iocoder.forum.services.IUserService;
 import cn.iocoder.forum.utils.MD5Util;
+import cn.iocoder.forum.utils.StringUtil;
 import cn.iocoder.forum.utils.UUIDUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -115,5 +116,67 @@ public class UserController {
             session.invalidate();
         }
         return AppResult.success("退出登录成功");
+    }
+
+    @Operation(summary = "修改用户信息", description = "修改用户信息")
+    @PostMapping("/modifyInfo")
+    public AppResult modifyInfo(HttpServletRequest request,
+                                @Param("用户名") @RequestParam(value = "username",required = false) String username,
+                                @Param("昵称") @RequestParam(value = "nickname",required = false) String nickname,
+                                @Param("性别") @RequestParam(value = "gender",required = false) Byte gender,
+                                @Param("邮箱") @RequestParam(value = "email",required = false) String email,
+                                @Param("电话号") @RequestParam(value = "phoneNum",required = false) String phoneNum,
+                                @Param("个人简介") @RequestParam(value = "remark",required = false) String remark) {
+        // 1. 接收参数
+        // 2. 对参数做非空校验（全部都为空，则返回错误描述）
+        if (StringUtil.isEmpty(username) && StringUtil.isEmpty(nickname)
+                && StringUtil.isEmpty(email) && StringUtil.isEmpty(phoneNum)
+                && StringUtil.isEmpty(remark) && gender == null) {
+            // 返回错误信息
+            return AppResult.failed("请输入要修改的内容");
+        }
+        // 从session中获取用户信息
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 3. 封装对象
+        User updateUser = new User();
+        updateUser.setId(user.getId()); // 用户Id
+        updateUser.setUsername(username); // 用户名
+        updateUser.setNickname(nickname); // 昵称
+        updateUser.setGender(gender); // 性别
+        updateUser.setEmail(email); // 邮箱
+        updateUser.setPhoneNum(phoneNum); // 电话
+        updateUser.setRemark(remark); // 个人简介
+        // 4. 调用service中的方法
+        userService.modifyInfo(updateUser);
+        // 5. 查询最新的用户
+        user = userService.selectById(user.getId());
+        // 6. 把最新的用户信息设置到session中
+        session.setAttribute(AppConfig.USER_SESSION, user);
+        // 7. 返回结果
+        return AppResult.success(user);
+    }
+
+    @Operation(summary = "修改用户密码", description = "修改用户密码")
+    @PostMapping("/modifyPwd")
+    public AppResult modifyPassword(HttpServletRequest request,
+                                    @Param("旧密码") @RequestParam("oldPassword") @NotNull String oldPassword,
+                                    @Param("新密码") @RequestParam("newPassword") @NotNull String newPassword,
+                                    @Param("确认密码") @RequestParam("passwordRepeat") @NotNull String passwordRepeat) {
+        // 1. 校验新密码与老密码是否相同
+        if (newPassword.equals(oldPassword)) {
+            return AppResult.failed(ResultCode.FAILED_TWO_PWD_NOT_SAME);
+        }
+        // 2. 获取session中的用户信息
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 3. 调用service中的方法
+        userService.modifyPassword(user.getId(), oldPassword, newPassword);
+        // 4. 销毁session, 强制让用户重新登录
+        if (session != null) {
+            session.invalidate();
+        }
+        // 5. 返回结果
+        return AppResult.success();
     }
 }

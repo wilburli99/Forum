@@ -63,4 +63,27 @@ class UserServiceImplTest {
         userService.addOneArticleCountById(3L);
         System.out.println("更新成功");
     }
+
+    @Test
+    @Transactional
+    void modifyInfo() {
+        User user = new User();
+        user.setId(4L);
+        user.setUsername("testmodify22");
+        user.setNickname("testmodify22");
+        user.getGender(4);
+        user.setEmail("lwb980210@gmail.com");
+        user.setPhoneNum("15033335555");
+        user.setRemark("测试");
+
+        userService.modifyInfo(user);
+        System.out.println("更新成功");
+    }
+
+    @Test
+    void modifyPassword() {
+        User user = new User();
+        user.setId(2L);
+        userService.modifyPassword(user.getId(), "111111", "123456");
+    }
 }
