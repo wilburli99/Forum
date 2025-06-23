@@ -2,6 +2,7 @@ package cn.iocoder.forum.services;
 
 import cn.iocoder.forum.model.Message;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,4 +41,12 @@ public interface IMessageService {
      * @return Message
      */
     Message selectById(Long id);
+
+    /**
+     * 回复站内信
+     * @param replyId 回复ID
+     * @param message 站内信
+     */
+    @Transactional
+    void reply(Long replyId, Message message);
 }

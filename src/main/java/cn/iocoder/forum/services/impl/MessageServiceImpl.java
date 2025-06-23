@@ -115,4 +115,23 @@ public class MessageServiceImpl implements IMessageService {
         // 返回结果
         return message;
     }
+
+    @Override
+    public void reply(Long replyId, Message message) {
+        // 非空校验
+        if (replyId == null || replyId <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 校验repliedId对应的站内信状态
+        Message existsMessage = messageMapper.selectByPrimaryKey(replyId);
+        if (existsMessage == null || existsMessage.getDeleteState() == 1) {
+            log.warn(ResultCode.FAILED_MESSAGE_NOT_EXISTS.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_MESSAGE_NOT_EXISTS));
+        }
+        // 更新状态为已回复
+        updateStateById(replyId, (byte) 2);
+        // 把回复的内容写进数据库
+        create(message);
+    }
 }
