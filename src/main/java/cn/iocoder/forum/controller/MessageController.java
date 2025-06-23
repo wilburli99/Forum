@@ -85,4 +85,28 @@ public class MessageController {
         // 3. 封装结果
         return AppResult.success(messages);
     }
+
+    @Operation(summary = "标记已读", description = "标记已读")
+    @PostMapping("/markRead")
+    public AppResult markRead(HttpServletRequest request,
+                               @Param("站内信id") @RequestParam("id") @NotNull Long id) {
+        // 1. 根据ID查询站内信
+        Message message = messageService.selectById(id);
+        // 2. 站内信是否存在
+        if (message == null || message.getDeleteState() == 1) {
+            // 返回错误信息
+            return AppResult.failed(ResultCode.FAILED_MESSAGE_NOT_EXISTS);
+        }
+        // 3. 站内信是不是自己的
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        if (user.getId() != message.getReceiveUserId()) {
+            // 返回错误信息
+            return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+        }
+        // 4. 调用service中的方法，更新为已读
+        messageService.updateStateById(id, (byte) 1);
+        // 5. 返回结果
+        return AppResult.success();
+    }
 }

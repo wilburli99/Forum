@@ -81,4 +81,38 @@ public class MessageServiceImpl implements IMessageService {
         // 返回结果
         return messages;
     }
+
+    @Override
+    public void updateStateById(Long id, Byte state) {
+        // 非空校验
+        if (id == null || id <= 0 || state < 0 || state > 2) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 构造更新对象
+        Message updateMessage = new Message();
+        updateMessage.setId(id);
+        updateMessage.setState(state);
+        Date date = new Date();
+        updateMessage.setUpdateTime(date);
+        // 调用DAO
+        int row = messageMapper.updateByPrimaryKeySelective(updateMessage);
+        if (row != 1) {
+            log.warn(ResultCode.ERROR_SERVICES.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.ERROR_SERVICES));
+        }
+    }
+
+    @Override
+    public Message selectById(Long id) {
+        // 非空校验
+        if (id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 调用DAO
+        Message message = messageMapper.selectByPrimaryKey(id);
+        // 返回结果
+        return message;
+    }
 }

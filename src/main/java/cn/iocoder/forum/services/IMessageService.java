@@ -23,7 +23,21 @@ public interface IMessageService {
     /**
      * 根据用户ID查询所有站内信
      * @param receiveUserId 接收用户ID
-     * @return List<Message></>站内信列表
+     * @return List<Message> 站内信列表
      */
     List<Message> selectByReceiveUserId(Long receiveUserId);
+
+    /**
+     * 根据ID更新站内信状态
+     * @param id 站内信ID
+     * @param state 状态
+     */
+    void updateStateById(Long id, Byte state);
+
+    /**
+     * 根据ID查询站内信
+     * @param id 站内信ID
+     * @return Message
+     */
+    Message selectById(Long id);
 }

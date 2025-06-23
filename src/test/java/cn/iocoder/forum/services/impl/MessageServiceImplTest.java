@@ -44,4 +44,10 @@ class MessageServiceImplTest {
         messages = messageService.selectByReceiveUserId(20L);
         System.out.println(objectMapper.writeValueAsString(messages));
     }
+
+    @Test
+    void updateStateById() {
+        messageService.updateStateById(1L, (byte) 1);
+        System.out.println("更新成功");
+    }
 }
