@@ -15,10 +15,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @Tag(name = "站内信接口", description = "站内信接口")
 @Slf4j
 @RestController
@@ -61,5 +59,17 @@ public class MessageController {
         messageService.create(message);
         // 6. 返回结果
         return AppResult.success("发送成功");
+    }
+
+    @Operation(summary = "获取未读消息数量", description = "获取未读消息数量")
+    @GetMapping("/getUnreadCount")
+    public AppResult<Integer> getUnreadCount(HttpServletRequest request) {
+        // 1. 获取当前登录的用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 2. 调用service
+        Integer count = messageService.selectUnreadCount(user.getId());
+        // 3. 返回结果
+        return AppResult.success(count);
     }
 }
