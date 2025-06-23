@@ -3,6 +3,8 @@ package cn.iocoder.forum.services;
 import cn.iocoder.forum.model.Message;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface IMessageService {
 
     /**
@@ -17,4 +19,11 @@ public interface IMessageService {
      * @return 未读的站内信数量
      */
     Integer selectUnreadCount(Long receiveUserId);
+
+    /**
+     * 根据用户ID查询所有站内信
+     * @param receiveUserId 接收用户ID
+     * @return List<Message></>站内信列表
+     */
+    List<Message> selectByReceiveUserId(Long receiveUserId);
 }

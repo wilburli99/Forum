@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "站内信接口", description = "站内信接口")
 @Slf4j
 @RestController
@@ -71,5 +73,16 @@ public class MessageController {
         Integer count = messageService.selectUnreadCount(user.getId());
         // 3. 返回结果
         return AppResult.success(count);
+    }
+    @Operation(summary = "获取用户所有站内信消息", description = "获取用户所有站内信消息")
+    @GetMapping("/getAll")
+    public AppResult<List<Message>> getAll(HttpServletRequest request) {
+        // 1. 获取当前登录的用户
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        // 2. 调用service
+        List<Message> messages = messageService.selectByReceiveUserId(user.getId());
+        // 3. 封装结果
+        return AppResult.success(messages);
     }
 }

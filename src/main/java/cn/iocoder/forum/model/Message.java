@@ -19,6 +19,9 @@ public class Message {
 
     private Date updateTime;
 
+    // 关联发送者对象
+    private User postUser;
+
     public Long getId() {
         return id;
     }
@@ -81,5 +84,13 @@ public class Message {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public User getPostUser() {
+        return postUser;
+    }
+
+    public void setPostUser(User postUser) {
+        this.postUser = postUser;
     }
 }

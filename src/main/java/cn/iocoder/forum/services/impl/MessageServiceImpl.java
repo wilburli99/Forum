@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -66,5 +67,18 @@ public class MessageServiceImpl implements IMessageService {
         }
         // 返回结果
         return count;
+    }
+
+    @Override
+    public List<Message> selectByReceiveUserId(Long receiveUserId) {
+        // 非空校验
+        if (receiveUserId == null || receiveUserId <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        // 调用DAO
+        List<Message> messages = messageMapper.selectByReceiveUserId(receiveUserId);
+        // 返回结果
+        return messages;
     }
 }
