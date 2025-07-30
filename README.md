@@ -139,10 +139,6 @@ Forum/
    java -jar target/Forum-0.0.1-SNAPSHOT.jar
    ```
 
-5. **访问应用**
-   - 前端页面: http://localhost:8080
-   - API文档: http://localhost:8080/swagger-ui.html
-
 ## 📊 数据库设计
 
 系统包含5个核心数据表：
@@ -203,34 +199,5 @@ Forum/
 - 索引优化
 - 懒加载
 
-## 🤝 贡献指南
 
-1. Fork 本项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建 Pull Request
-
-## 📝 更新日志
-
-### v1.0.0 (当前版本)
-- ✅ 基础用户系统
-- ✅ 论坛核心功能
-- ✅ 前端界面
-- ✅ API 文档
-
-## 📄 许可证
-
-本项目基于 MIT 许可证开源 - 查看 [LICENSE](LICENSE) 文件了解详情
-
-## 📞 联系方式
-
-如有问题或建议，请通过以下方式联系：
-
-- 项目地址: [GitHub/Gitee链接]
-- 邮箱: [联系邮箱]
-- QQ群: [QQ群号]
-
----
-
-⭐ 如果这个项目对您有帮助，请给我们一个 Star！ 
+⭐ 如果这个项目对您有帮助，请给我一个 Star！ 
